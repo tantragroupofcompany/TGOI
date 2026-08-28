@@ -5,21 +5,36 @@ building businesses, creating opportunities, and shaping the future.
 
 ## Phase 1 Scope
 
-Phase 1 delivers the public foundation of the website:
+Phase 1 delivered the public foundation of the website:
 
 - Professional, premium, fully responsive corporate HOME PAGE
 - Sticky responsive navbar (mobile menu included)
 - Hero, About, Vision, Mission, Our Companies, Leadership Preview,
   Contact Preview and Footer sections
 - SHOPTANTRA (https://shoptantra.in) company card with live link
-- Placeholder routes for `/leadership`, `/companies`, `/contact`
-  and `/corporate/login` (Phase 3+ placeholder only — no authentication)
-- Structured static content data in `lib/data.ts`, ready to be converted
-  to database-driven content in later phases
+- Structured static content data ready to be converted to database-driven
+  content in later phases
 
-**Public access rule (Phase 1):** public users have read-only access.
-The Corporate Management system (login, dashboard, content management)
-will be implemented in future phases and remains private.
+## Phase 2 Scope
+
+Phase 2 delivered the remaining public pages:
+
+- **/leadership** — full Leadership page (Founder, Chairman, CEO & MD profiles,
+  leadership vision, messages) plus a Corporate Access preview banner
+- **/companies** — full Companies page (portfolio introduction, featured
+  company cards, SHOPTANTRA flagship spotlight, and a generic
+  "BUILDING THE FUTURE" expansion section)
+- **/contact** — full Contact page (Email, Phone, Office Address, Website card,
+  office information, and a public-access notice)
+- Reusable components: `LeadershipProfile`, `CompanyCard`, `ContactCard`,
+  `CorporateAccessBanner`
+- A dedicated public data layer under `data/` (`leadership.ts`, `companies.ts`,
+  `contact.ts`), designed to migrate to a database in Phases 4–5
+- SEO metadata and Open Graph basics across pages
+
+**Public access rule (Phases 1–2):** public users have read-only access. There is
+no public editing, and no authentication / demo accounts. Corporate access
+remains a placeholder link to `/corporate/login` pending Phase 3.
 
 ## Tech Stack
 
@@ -51,14 +66,16 @@ npm run typecheck  # TypeScript check (tsc --noEmit)
 
 ```
 app/                  # App Router pages (page.tsx, layout.tsx, globals.css)
-components/           # Modular, reusable section components
-lib/data.ts           # Structured static content (placeholder data)
+components/           # Modular, reusable section & page components
+lib/data.ts           # Shared content data (navigation, home sections)
+data/                 # Public page data: leadership.ts, companies.ts, contact.ts
 public/logo/          # Brand assets
 public/images/        # Image / logo placeholder assets
 ```
 
 ## Future Phases
 
-- `/leadership`, `/companies`, `/contact` — full pages
-- `/corporate/login`, `/corporate/dashboard` and management modules
-- Database-driven content (Phases 4–5)
+- **Phase 3** — Corporate Access + secure authentication (`/corporate/login`,
+  `/corporate/dashboard`)
+- **Phases 4–5** — database-driven content with Corporate Dashboard management
+  (leadership, companies, contact, branding, settings, logs)
