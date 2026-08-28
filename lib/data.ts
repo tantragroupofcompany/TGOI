@@ -82,33 +82,14 @@ export const mission = {
   ],
 };
 
-export type Company = {
-  id: string;
-  name: string;
-  category: string;
-  website: string;
-  logo: string;
-  description: string;
-  status: "live" | "upcoming";
-};
-
 /**
- * Company cards. The array is rendered generically on the website and in the
- * future will be managed from /corporate/dashboard/companies. Add unlimited
- * companies by pushing new entries here.
+ * Company cards are the single-source, richer schema defined in
+ * data/companies.ts (Phase 2) and re-exported here so the home page and
+ * footer continue to read from one canonical location. Add unlimited
+ * companies there; the future Corporate Dashboard (Phase 4+) will manage
+ * this content.
  */
-export const companies: Company[] = [
-  {
-    id: "shoptantra",
-    name: "SHOPTANTRA",
-    category: "Multi-Vendor E-Commerce Marketplace",
-    website: "https://shoptantra.in",
-    logo: "/images/shoptantra-logo-placeholder.svg",
-    description:
-      "Shoptantra is the flagship multi-vendor e-commerce marketplace of Tantra Group of Industries — a modern platform where sellers grow their business and customers enjoy a secure, seamless shopping experience.",
-    status: "live",
-  },
-];
+export { companies, type Company } from "@/data/companies";
 
 export type Leader = {
   id: string;
@@ -127,31 +108,33 @@ export const leadership: Leader[] = [
     role: "FOUNDER",
     name: "Founder Name",
     introduction:
-      "Guides the group with vision, values, and long-term strategy. Full profile coming in Phase 2.",
+      "Guides the group with vision, values, and long-term strategy.",
+
   },
   {
     id: "chairman",
     role: "CHAIRMAN",
     name: "Chairman Name",
     introduction:
-      "Leads governance, partnerships, and corporate direction. Full profile coming in Phase 2.",
+      "Leads governance, partnerships, and corporate direction.",
+
   },
   {
     id: "ceo-md",
     role: "CEO & MD",
     name: "CEO & Managing Director",
     introduction:
-      "Drives day-to-day group operations and venture growth. Full profile coming in Phase 2.",
+      "Drives day-to-day group operations and venture growth.",
+
   },
 ];
 
-export const contact = {
-  title: "CONTACT US",
-  email: "info@tantragroup.com",
-  phone: "+91 90000 00000",
-  address: "Tantra Group of Industries, [Office Address Placeholder], India",
-  note: "General enquiries only. Corporate access is restricted to authorised personnel.",
-};
+/**
+ * Public contact details (Phase 2) live in data/contact.ts and are
+ * re-exported here so the home contact preview and the /contact page share
+ * one source of truth.
+ */
+export { contact } from "@/data/contact";
 
 export const navigation = {
   links: [

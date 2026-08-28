@@ -25,6 +25,15 @@ export const metadata: Metadata = {
     index: true,
     follow: true,
   },
+  openGraph: {
+    title:
+      "Tantra Group of Industries (TGOI) | Building Businesses. Creating Opportunities.",
+    description:
+      "Official website of Tantra Group of Industries (TGOI) — a parent company building innovative businesses, supporting entrepreneurship, and shaping the future.",
+    type: "website",
+    locale: "en_IN",
+    siteName: "Tantra Group of Industries (TGOI)",
+  },
 };
 
 export const viewport: Viewport = {

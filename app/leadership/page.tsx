@@ -1,11 +1,19 @@
 import type { Metadata } from "next";
 import PageHeader from "@/components/PageHeader";
-import LeadershipPreview from "@/components/LeadershipPreview";
+import LeadershipProfile from "@/components/LeadershipProfile";
+import CorporateAccessBanner from "@/components/CorporateAccessBanner";
+import { leadershipProfiles } from "@/data/leadership";
 
 export const metadata: Metadata = {
   title: "Our Leadership",
   description:
-    "Leadership of Tantra Group of Industries (TGOI). Detailed profiles are being prepared for Phase 2.",
+    "Meet the leadership team guiding the vision, strategy, and future growth of Tantra Group of Industries (TGOI).",
+  openGraph: {
+    title: "Our Leadership | Tantra Group of Industries",
+    description:
+      "Meet the leadership team guiding the vision, strategy, and future growth of TGOI.",
+    type: "website",
+  },
 };
 
 export default function LeadershipPage() {
@@ -14,11 +22,16 @@ export default function LeadershipPage() {
       <PageHeader
         eyebrow="Leadership"
         title="OUR LEADERSHIP"
-        description="The vision and direction behind the Tantra Group of Industries. Detailed leadership profiles will be published in Phase 2."
+        description="Meet the leadership team guiding the vision, strategy, and future growth of TANTRA GROUP OF INDUSTRIES."
       />
-      <div className="bg-slate-50 pb-20 pt-4 lg:pb-24">
-        <LeadershipPreview />
-      </div>
+      {leadershipProfiles.map((profile, index) => (
+        <LeadershipProfile
+          key={profile.id}
+          profile={profile}
+          reverse={index % 2 === 1}
+        />
+      ))}
+      <CorporateAccessBanner />
     </>
   );
 }

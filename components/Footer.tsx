@@ -96,7 +96,7 @@ export default function Footer() {
             © {year} {company.name}. All Rights Reserved.
           </p>
           <p className="text-xs text-slate-500">
-            Public website · Phase 1 · {company.shortName}
+            Public website · Phase 2 · {company.shortName}
           </p>
         </div>
       </div>
