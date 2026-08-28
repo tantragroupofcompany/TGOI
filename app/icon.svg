@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" role="img" aria-label="TGOI">
+  <defs>
+    <linearGradient id="tgoi-gold" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#F2CF6B"/>
+      <stop offset="1" stop-color="#C9A227"/>
+    </linearGradient>
+  </defs>
+  <rect width="48" height="48" rx="10" fill="#0A1220"/>
+  <polygon points="24,6 38,14 38,34 24,42 10,34 10,14" fill="url(#tgoi-gold)"/>
+  <path d="M17 17 L31 17 L31 21 L26 21 L26 32 L22 32 L22 21 L17 21 Z" fill="#0A1220"/>
+</svg>
