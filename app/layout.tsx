@@ -1,62 +1,31 @@
-import type { Metadata, Viewport } from "next";
-import "./globals.css";
+﻿import type { Metadata } from "next";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import { getSiteContent } from "@/lib/content/site";
+import "./globals.css";
 
 export const metadata: Metadata = {
-  title: {
-    default:
-      "Tantra Group of Industries (TGOI) | Building Businesses. Creating Opportunities.",
-    template: "%s | Tantra Group of Industries",
-  },
+  title: "TANTRA GROUP OF INDUSTRIES (TGOI) | Building Businesses. Creating Opportunities.",
   description:
-    "Official website of Tantra Group of Industries (TGOI) — a parent company building innovative businesses, supporting entrepreneurship, and shaping the future.",
-  keywords: [
-    "Tantra Group of Industries",
-    "TGOI",
-    "Tantra Group",
-    "parent company",
-    "Shoptantra",
-    "corporate",
-    "business group",
-  ],
-  applicationName: "TGOI Official Website",
-  robots: {
-    index: true,
-    follow: true,
-  },
-  openGraph: {
-    title:
-      "Tantra Group of Industries (TGOI) | Building Businesses. Creating Opportunities.",
-    description:
-      "Official website of Tantra Group of Industries (TGOI) — a parent company building innovative businesses, supporting entrepreneurship, and shaping the future.",
-    type: "website",
-    locale: "en_IN",
-    siteName: "Tantra Group of Industries (TGOI)",
-  },
-};
-
-export const viewport: Viewport = {
-  width: "device-width",
-  initialScale: 1,
+    "Official website of TANTRA GROUP OF INDUSTRIES — a parent company building businesses, creating opportunities, and shaping the future.",
+  icons: { icon: "/icon.svg" },
 };
 
 export default function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
+}) {
+  const content = getSiteContent();
+
   return (
     <html lang="en">
-      <body className="overflow-x-safe">
-        <a
-          href="#main-content"
-          className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:rounded-md focus:bg-gold-500 focus:px-4 focus:py-2 focus:text-sm focus:font-semibold focus:text-night-950"
-        >
-          Skip to main content
-        </a>
-        <Navbar />
-        <main id="main-content">{children}</main>
+      <body className="bg-night-950 text-white antialiased">
+        <Navbar
+          companyName={content.branding.companyName}
+          logoPath={content.branding.logoPath}
+        />
+        <main>{children}</main>
         <Footer />
       </body>
     </html>

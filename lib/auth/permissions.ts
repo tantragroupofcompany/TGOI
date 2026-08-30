@@ -39,10 +39,15 @@ export function isCorporateRole(value: unknown): value is CorporateRole {
 }
 
 /**
- * Access model:
- * - FOUNDER → full corporate access to every module.
- * - CHAIRMAN / CEO / MD → corporate management access to the management
- *   modules (they can manage content, but not full platform control).
+ * Access model (Phase 4):
+ * - FOUNDER  → full corporate access to every module.
+ * - CHAIRMAN → leadership, company, contact, branding, website, activity logs
+ *              (no sensitive Settings).
+ * - CEO / MD → leadership, company, contact, website, activity logs
+ *              (no Branding, no sensitive Settings).
+ *
+ * "SETTINGS" is restricted to the Founder only and never touches security
+ * secrets (database/SESSION/API credentials are not editable anywhere).
  *
  * The map is the single place permission changes are made, so adjustments can
  * be applied later without touching authentication logic.
@@ -63,25 +68,25 @@ const ROLE_PERMISSIONS: Record<CorporateRole, Record<CorporateModule, boolean>> 
     CONTACT_MANAGEMENT: true,
     BRANDING_MANAGEMENT: true,
     WEBSITE_MANAGEMENT: true,
-    SETTINGS: true,
+    SETTINGS: false,
     ACTIVITY_LOGS: true,
   },
   CEO: {
     LEADERSHIP_MANAGEMENT: true,
     COMPANY_MANAGEMENT: true,
     CONTACT_MANAGEMENT: true,
-    BRANDING_MANAGEMENT: true,
+    BRANDING_MANAGEMENT: false,
     WEBSITE_MANAGEMENT: true,
-    SETTINGS: true,
+    SETTINGS: false,
     ACTIVITY_LOGS: true,
   },
   MD: {
     LEADERSHIP_MANAGEMENT: true,
     COMPANY_MANAGEMENT: true,
     CONTACT_MANAGEMENT: true,
-    BRANDING_MANAGEMENT: true,
+    BRANDING_MANAGEMENT: false,
     WEBSITE_MANAGEMENT: true,
-    SETTINGS: true,
+    SETTINGS: false,
     ACTIVITY_LOGS: true,
   },
 };

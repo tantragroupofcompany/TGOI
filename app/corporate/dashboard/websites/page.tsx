@@ -1,18 +1,15 @@
 import type { Metadata } from "next";
 import { pageHasModulePermission } from "@/lib/auth/guards";
-import ModulePlaceholder from "@/components/corporate/ModulePlaceholder";
+import WebsiteManager from "@/components/corporate/WebsiteManager";
 import AccessDenied from "@/components/corporate/AccessDenied";
+import { listCompanies } from "@/lib/content/store";
 
 export const metadata: Metadata = { title: "Website Links" };
+export const dynamic = "force-dynamic";
 
 export default async function WebsitesManagementPage() {
   const allowed = await pageHasModulePermission("WEBSITE_MANAGEMENT");
   if (!allowed) return <AccessDenied />;
-  return (
-    <ModulePlaceholder
-      module="WEBSITE_MANAGEMENT"
-      title="WEBSITE LINKS"
-      description="Manage live business website links used across the public site, such as the SHOPTANTRA link, navigation, and footer. Edit-and-save functionality arrives in Phase 4."
-    />
-  );
+  const companies = listCompanies().map((c) => ({ id: c.id, name: c.name }));
+  return <WebsiteManager companies={companies} />;
 }
