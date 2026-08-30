@@ -40,4 +40,8 @@ yarn-error.log*
 
 # runtime uploads
 /public/uploads/*
+
+# runtime logs
+/dev-server.log
+*.log
 !/public/uploads/.gitkeep
