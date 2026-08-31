@@ -1,22 +1,23 @@
 import Image from "next/image";
 import Reveal from "@/components/Reveal";
 import type { Company } from "@/data/companies";
+import type { PublicCompany } from "@/lib/content/types";
 
 interface CompanyCardProps {
-  company: Company;
+  company: Company | PublicCompany;
   /** Button label, e.g. "VISIT SHOPTANTRA" for the flagship company. */
   ctaLabel?: string;
 }
 
 /**
- * Reusable company card driven by data/companies.ts. Supports unlimited
+ * Reusable company card driven by data/companies.ts or database site content. Supports unlimited
  * companies; status and featured flags drive the badges and placement.
  */
 export default function CompanyCard({
   company,
   ctaLabel = "VISIT WEBSITE",
 }: CompanyCardProps) {
-  const live = company.status === "live";
+  const live = company.status === "live" || company.status === "LIVE";
 
   return (
     <Reveal>

@@ -1,15 +1,17 @@
+import Image from "next/image";
 import Reveal from "@/components/Reveal";
 import type { LeaderProfile } from "@/data/leadership";
+import type { PublicLeaderProfile } from "@/lib/content/types";
 
 interface LeadershipProfileProps {
-  profile: LeaderProfile;
+  profile: LeaderProfile | PublicLeaderProfile;
   /** Alternate the photo/text ordering for a dynamic, premium layout. */
   reverse?: boolean;
 }
 
 /**
  * Full, reusable leadership profile block used on the /leadership page.
- * Renders a professional photo placeholder, role, name, biography, the
+ * Renders a professional photo or placeholder, role, name, biography, the
  * leader's personal insight (vision / philosophy / strategy), and a message.
  * Supports unlimited leadership members via the data array.
  */
@@ -30,20 +32,30 @@ export default function LeadershipProfile({
             <div className="relative overflow-hidden rounded-2xl bg-night-900 shadow-xl">
               <div aria-hidden="true" className="absolute inset-0 bg-glow-gold" />
               <div className="relative flex aspect-[4/3] items-center justify-center">
-                <svg
-                  aria-hidden="true"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="#E5B84A"
-                  strokeWidth="1.1"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  className="h-24 w-24 opacity-80"
-                >
-                  <circle cx="12" cy="8" r="3.6" />
-                  <path d="M4.5 20c.7-3.6 3.9-6 7.5-6s6.8 2.4 7.5 6" />
-                </svg>
-                <span className="absolute bottom-5 left-5 rounded-md bg-gold-500/90 px-3 py-1.5 text-xs font-bold uppercase tracking-widest text-night-950">
+                {profile.photo ? (
+                  <Image
+                    src={profile.photo}
+                    alt={profile.photoAlt || profile.name}
+                    fill
+                    className="object-cover"
+                    unoptimized
+                  />
+                ) : (
+                  <svg
+                    aria-hidden="true"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="#E5B84A"
+                    strokeWidth="1.1"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    className="h-24 w-24 opacity-80"
+                  >
+                    <circle cx="12" cy="8" r="3.6" />
+                    <path d="M4.5 20c.7-3.6 3.9-6 7.5-6s6.8 2.4 7.5 6" />
+                  </svg>
+                )}
+                <span className="absolute bottom-5 left-5 rounded-md bg-gold-500/90 px-3 py-1.5 text-xs font-bold uppercase tracking-widest text-night-950 shadow-md">
                   {profile.role}
                 </span>
               </div>

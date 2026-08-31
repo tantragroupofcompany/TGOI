@@ -1,21 +1,12 @@
 import "server-only";
 import type { CorporateRole } from "@/lib/auth/permissions";
-import { DATABASE_URL_ENV } from "@/lib/auth/constants";
+import { getDb, type DbRow } from "@/lib/db";
 
 /**
- * Corporate user repository (database-ready).
+ * Corporate user repository.
  *
- * Phase 3 does NOT include a database (Phases 4–5 add the production data
- * layer). To comply with the security model:
- *   - no demo accounts are seeded,
- *   - no passwords/access codes are hardcoded,
- *   - the repository FAILS SAFE: until a real database / provisioning path is
- *     configured, login always resolves to "no user" and is rejected with a
- *     generic error.
- *
- * To connect a production database, implement `getUserForLogin` against the
- * chosen store (see `DATABASE_URL_ENV`) and return users that were provisioned
- * through the authorized internal account-management process.
+ * Reads and updates user credentials from the SQLite database.
+ * Passwords and access codes are stored only as strong hashes.
  */
 
 export interface CorporateUser {
@@ -32,37 +23,62 @@ export interface CorporateUser {
   updatedAt: number;
 }
 
-/** Whether a production database connection is configured. */
+/** Whether a production database connection or SQLite store is available. */
 export function isDatabaseConfigured(): boolean {
-  return Boolean(process.env[DATABASE_URL_ENV]);
+  try {
+    getDb();
+    return true;
+  } catch {
+    return false;
+  }
 }
 
 /**
  * Resolve a corporate user by email or username.
- *
- * Fail-safe default: returns null when no database is configured. Swap this
- * implementation for a real query in Phase 4 — do NOT store corporate users
- * in frontend code or commit credentials.
+ * Queries the corporate_users table in the SQLite database.
  */
 export async function getUserForLogin(
   identifier: string
 ): Promise<CorporateUser | null> {
-  if (!isDatabaseConfigured()) {
+  try {
+    const handle = getDb();
+    const normalized = identifier.trim().toLowerCase();
+    const row = handle
+      .prepare(
+        "SELECT * FROM corporate_users WHERE LOWER(email) = ? OR LOWER(username) = ?"
+      )
+      .get(normalized, normalized) as DbRow | undefined;
+
+    if (!row) return null;
+
+    return {
+      id: String(row.id),
+      name: String(row.name ?? ""),
+      email: String(row.email ?? ""),
+      username: String(row.username ?? ""),
+      passwordHash: String(row.password_hash ?? ""),
+      role: String(row.role) as CorporateRole,
+      isActive: Number(row.is_active ?? 1) === 1,
+      lastLoginAt: row.last_login_at ? Number(row.last_login_at) : null,
+      createdAt: Number(row.created_at ?? 0),
+      updatedAt: Number(row.updated_at ?? 0),
+    };
+  } catch {
     return null;
   }
-  // TODO(Phase 4): query the production users table by normalized email or
-  // username (return only active accounts here or filter by isActive below).
-  void identifier;
-  return null;
 }
 
-/** Records a successful login timestamp (fire-and-forget; DB in Phase 4). */
+/** Records a successful login timestamp in the corporate_users table. */
 export async function updateLastLogin(
   userId: string,
   timestamp: number
 ): Promise<void> {
-  if (!isDatabaseConfigured()) return;
-  // TODO(Phase 4): UPDATE users SET last_login_at = ? WHERE id = ?
-  void userId;
-  void timestamp;
-}
+  try {
+    const handle = getDb();
+    handle
+      .prepare("UPDATE corporate_users SET last_login_at = ?, updated_at = ? WHERE id = ?")
+      .run(timestamp, timestamp, userId);
+  } catch {
+    // Fail safe
+  }
+}

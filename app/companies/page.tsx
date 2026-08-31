@@ -4,7 +4,10 @@ import PageHeader from "@/components/PageHeader";
 import SectionHeading from "@/components/SectionHeading";
 import CompanyCard from "@/components/CompanyCard";
 import Reveal from "@/components/Reveal";
-import { featuredCompanies, futureVentures, shoptantra } from "@/data/companies";
+import { getSiteContent } from "@/lib/content/site";
+import { shoptantra as fallbackShoptantra, futureVentures as fallbackFutureVentures } from "@/data/companies";
+
+export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
   title: "Our Companies",
@@ -19,6 +22,11 @@ export const metadata: Metadata = {
 };
 
 export default function CompaniesPage() {
+  const content = getSiteContent();
+  const companiesList = content.companies;
+  const featured = content.featuredCompanies.length > 0 ? content.featuredCompanies : companiesList;
+  const flagship = companiesList.find((c) => c.id === "shoptantra" || c.featured) || companiesList[0] || fallbackShoptantra;
+  const futureList = content.futureVentures.length > 0 ? content.futureVentures : fallbackFutureVentures;
   return (
     <>
       <PageHeader
@@ -53,7 +61,7 @@ export default function CompaniesPage() {
           </Reveal>
 
           <div className="mx-auto mt-12 grid max-w-5xl grid-cols-1 gap-8 sm:grid-cols-2">
-            {featuredCompanies.map((companyItem) => (
+            {featured.map((companyItem) => (
               <CompanyCard
                 key={companyItem.id}
                 company={companyItem}
@@ -71,8 +79,8 @@ export default function CompaniesPage() {
             <Reveal>
               <div className="flex items-center justify-center rounded-2xl bg-white/5 p-10 ring-1 ring-white/10">
                 <Image
-                  src={shoptantra.logo}
-                  alt={`${shoptantra.name} logo`}
+                  src={flagship.logo}
+                  alt={`${flagship.name} logo`}
                   width={300}
                   height={90}
                   className="h-20 w-auto"
@@ -86,34 +94,36 @@ export default function CompaniesPage() {
                 <span aria-hidden="true" className="h-px w-8 bg-current" />
                 Flagship Company
                 <span aria-hidden="true" className="h-1.5 w-1.5 rounded-full bg-gold-300" />
-                Operational
+                {String(flagship.status).toUpperCase() === "LIVE" ? "Operational" : "Coming Soon"}
               </p>
               <h2 className="mt-4 text-3xl font-extrabold tracking-tight sm:text-4xl">
-                {shoptantra.name}
+                {flagship.name}
               </h2>
               <p className="mt-3 text-sm font-bold uppercase tracking-wide text-gold-300">
-                {shoptantra.category}
+                {flagship.category}
               </p>
               <p className="mt-5 leading-relaxed text-slate-300">
-                {shoptantra.description}
+                {flagship.description}
               </p>
               <dl className="mt-6 grid grid-cols-1 gap-4 text-sm sm:grid-cols-2">
                 <div className="rounded-lg bg-white/5 p-4 ring-1 ring-white/10">
                   <dt className="text-xs uppercase tracking-wider text-slate-400">Status</dt>
-                  <dd className="mt-1 font-semibold text-emerald-300">Operational</dd>
+                  <dd className="mt-1 font-semibold text-emerald-300">
+                    {String(flagship.status).toUpperCase() === "LIVE" ? "Operational" : "Development"}
+                  </dd>
                 </div>
                 <div className="rounded-lg bg-white/5 p-4 ring-1 ring-white/10">
                   <dt className="text-xs uppercase tracking-wider text-slate-400">Founded</dt>
-                  <dd className="mt-1 font-semibold">{shoptantra.founded || "—"}</dd>
+                  <dd className="mt-1 font-semibold">{flagship.founded || "—"}</dd>
                 </div>
               </dl>
               <a
-                href={shoptantra.website}
+                href={flagship.website}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="mt-8 inline-flex items-center justify-center gap-2 rounded-md bg-gold-500 px-7 py-3.5 text-sm font-bold tracking-wide text-night-950 shadow-lg shadow-gold-500/20 transition hover:bg-gold-400 focus:outline-none focus-visible:ring-2 focus-visible:ring-gold-300 focus-visible:ring-offset-2 focus-visible:ring-offset-night-950"
               >
-                VISIT SHOPTANTRA
+                VISIT {flagship.name}
                 <svg
                   aria-hidden="true"
                   viewBox="0 0 24 24"
@@ -145,7 +155,7 @@ export default function CompaniesPage() {
           </Reveal>
 
           <div className="mx-auto mt-12 grid max-w-5xl grid-cols-1 gap-8 sm:grid-cols-3">
-            {futureVentures.map((venture, index) => (
+            {futureList.map((venture, index) => (
               <Reveal key={venture.id} delay={index * 80}>
                 <div className="flex h-full flex-col items-center rounded-2xl border border-dashed border-slate-300 bg-slate-50/60 p-8 text-center">
                   <span className="inline-flex h-12 w-12 items-center justify-center rounded-full bg-night-900 text-gold-400">

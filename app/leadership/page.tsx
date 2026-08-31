@@ -2,7 +2,9 @@ import type { Metadata } from "next";
 import PageHeader from "@/components/PageHeader";
 import LeadershipProfile from "@/components/LeadershipProfile";
 import CorporateAccessBanner from "@/components/CorporateAccessBanner";
-import { leadershipProfiles } from "@/data/leadership";
+import { getSiteContent } from "@/lib/content/site";
+
+export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
   title: "Our Leadership",
@@ -17,6 +19,9 @@ export const metadata: Metadata = {
 };
 
 export default function LeadershipPage() {
+  const content = getSiteContent();
+  const profiles = content.leaderProfiles;
+
   return (
     <>
       <PageHeader
@@ -24,7 +29,7 @@ export default function LeadershipPage() {
         title="OUR LEADERSHIP"
         description="Meet the leadership team guiding the vision, strategy, and future growth of TANTRA GROUP OF INDUSTRIES."
       />
-      {leadershipProfiles.map((profile, index) => (
+      {profiles.map((profile, index) => (
         <LeadershipProfile
           key={profile.id}
           profile={profile}

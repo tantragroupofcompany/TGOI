@@ -4,7 +4,9 @@ import PageHeader from "@/components/PageHeader";
 import Reveal from "@/components/Reveal";
 import SectionHeading from "@/components/SectionHeading";
 import ContactCard from "@/components/ContactCard";
-import { channels, contact } from "@/data/contact";
+import { getSiteContent } from "@/lib/content/site";
+
+export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
   title: "Contact Us",
@@ -45,6 +47,39 @@ const icons: Record<string, ReactNode> = {
 };
 
 export default function ContactPage() {
+  const content = getSiteContent();
+  const contact = content.contact;
+
+  const dynamicChannels = [
+    {
+      id: "email",
+      label: "Email",
+      value: contact.email,
+      href: contact.email ? `mailto:${contact.email}` : undefined,
+      note: "General enquiries",
+    },
+    {
+      id: "phone",
+      label: "Phone",
+      value: contact.phone,
+      href: contact.phone ? `tel:${contact.phone.replace(/\s+/g, "")}` : undefined,
+      note: "Office hours",
+    },
+    {
+      id: "address",
+      label: "Office Address",
+      value: contact.address,
+      note: "Registered office",
+    },
+    {
+      id: "website",
+      label: "Website",
+      value: contact.website,
+      href: contact.website || undefined,
+      note: "Official portal",
+    },
+  ];
+
   return (
     <>
       <PageHeader
@@ -65,7 +100,7 @@ export default function ContactPage() {
           </Reveal>
 
           <div className="mt-12 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
-            {channels.map((channel, index) => (
+            {dynamicChannels.map((channel, index) => (
               <Reveal key={channel.id} delay={index * 80}>
                 <ContactCard
                   label={channel.label}

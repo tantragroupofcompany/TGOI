@@ -39,8 +39,7 @@ export default async function CorporateDashboardPage() {
           </span>
         </p>
         <p className="mt-2 text-sm text-slate-400">
-          This secure area will grow into the full management suite in Phase 4.
-          Currently it provides the protected navigation shell only.
+          This secure management suite provides centralized corporate control over leadership profiles, company portfolios, contact information, branding assets, and activity logs.
         </p>
       </section>
 
@@ -56,7 +55,7 @@ export default async function CorporateDashboardPage() {
               className="rounded-xl border border-white/10 bg-white/[0.03] p-6 transition hover:border-gold-400 hover:bg-white/[0.06]"
             >
               <h3 className="font-semibold text-white">{item.label}</h3>
-              <p className="mt-1 text-xs text-slate-400">Protected module · Phase 4 readied</p>
+              <p className="mt-1 text-xs text-slate-400">Protected corporate module</p>
             </Link>
           ))}
         </div>
